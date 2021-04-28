@@ -1,5 +1,6 @@
 import styled from 'styled-components/native'
 import {LinearGradient } from 'expo-linear-gradient'
+import { RectButton } from 'react-native-gesture-handler'
 
 export const Linear = styled(LinearGradient)`
     flex: 1;
@@ -16,7 +17,7 @@ export const Title = styled.Text`
     margin-top: 20px;
 `
 
-export const CreateAccountContainer = styled.TouchableOpacity`
+export const CreateAccountContainer = styled(RectButton)`
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -30,4 +31,7 @@ export const CreateAccountContainer = styled.TouchableOpacity`
     padding: 16px;
 `
 
-export const AccountText = styled.Text``
+export const AccountText = styled.Text`
+    font-size: 20px;
+    margin-left: 10px;
+`

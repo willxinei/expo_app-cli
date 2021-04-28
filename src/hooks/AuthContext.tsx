@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import api from '../services/api';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface User {
   id: string;

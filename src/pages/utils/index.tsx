@@ -1,3 +1,4 @@
+import React from 'react'
 import { useFonts } from 'expo-font'
 import AppLoading from 'expo-app-loading'
 
@@ -6,6 +7,8 @@ export function Fonts() {
         'MontBlack': require('../../../assets/fonts/MontserratAlternates-Black.ttf'),
         'MontBold': require('../../../assets/fonts/MontserratAlternates-Bold.ttf')
     })
+
+    
 
     return fontsLoads
 }

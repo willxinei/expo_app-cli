@@ -1,12 +1,18 @@
-import styled from 'styled-components/native'
+import styled, { css } from 'styled-components/native'
 import {AntDesign as IconD} from '@expo/vector-icons'
+import { Colors } from '../../pages/utils'
 
+interface BorderPrps {
+    isCoused: boolean
+}
 
-export const Container = styled.View`
+export const Container = styled.View<BorderPrps>`
     flex-direction: row;
     align-items: center;
     width: 100%;
     height: 42px;
+    border-width: 2px;
+    border-color: #909090;
 
     margin-top: 10px;
 
@@ -14,6 +20,12 @@ export const Container = styled.View`
     border-radius: 12px;
     padding: 0 15px;
 
+    ${(props) =>
+        props.isCoused && 
+        css `
+            border-color: #22B18A;
+        `
+    }
 `
 
 export const TextInput = styled.TextInput`
