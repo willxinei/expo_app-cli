@@ -20,6 +20,7 @@ const SingUp: React.FC = () => {
 
     const navigate = useNavigation()
 
+
     const handleSigUp = useCallback(async (data) => {
         await api.post('user', {
             name,
@@ -54,16 +55,18 @@ const SingUp: React.FC = () => {
                     <Image source={Logo} />
                     <Title style={{fontFamily: 'MontBold'}} >Criar uma conta</Title>  
                         <Input 
-                            name='user' icon='user' 
+                            name='name' icon='user' 
                             placeholder='Nome' 
                             style={{fontFamily: 'MontBold'}} 
                             onChangeText={(name) => setName(name)}
+                            value={name}
                         />
                         <Input 
                             name='mail' icon='mail' 
                             placeholder='E-mail' 
                             style={{fontFamily: 'MontBold'}}
                             onChangeText={(email) => setMail(email)} 
+                            value={email}
                         />
                         <Input 
                             name='Telefone' icon='mobile1' 
@@ -71,6 +74,7 @@ const SingUp: React.FC = () => {
                             style={{fontFamily: 'MontBold'}}
                             
                             onChangeText={(telefone) => seTelefone(telefone)}
+                            value={telefone}
                         />
                         <Input 
                             name='password' icon='lock' 

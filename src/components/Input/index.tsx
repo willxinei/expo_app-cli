@@ -10,14 +10,6 @@ interface InputProps extends TextInputProps {
 }
 
 const Input: React.FC<InputProps> = ({name, icon, ...rest}) => {
-    const inputElementRef = useRef<any>(null)
-
-    const [isFocuse, setIsfocused] = useState(false)
-    const [isFilled, setIsFilled] = useState(false)
-
-    const handleInputFocu = useCallback(() => {
-        setIsfocused(true)
-    }, [])
 
     const loadFonts = Fonts()
 
@@ -26,10 +18,9 @@ const Input: React.FC<InputProps> = ({name, icon, ...rest}) => {
     }
 
     return (
-        <Container isCoused={isFocuse} >
+        <Container>
             <Icon name={icon} size={20} color='#999999' />
             <TextInput 
-                onFocus={handleInputFocu}
                 placeholderTextColor="#999999" 
                 {...rest}
             />

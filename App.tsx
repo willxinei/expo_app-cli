@@ -7,10 +7,11 @@ import Routes from './src/routes/';
 import AppProvider from './src/hooks'
 
 
+
 const App: React.FC = () => {
   return (
     <NavigationContainer>
-      <StatusBar style='dark' />
+      <StatusBar style='dark' hidden={true} />
       <AppProvider>
         <View style={{ flex: 1}} >
             <Routes />
