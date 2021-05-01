@@ -21,20 +21,29 @@ const SingUp: React.FC = () => {
     const navigate = useNavigation()
 
 
-    const handleSigUp = useCallback(async (data) => {
-        await api.post('user', {
-            name,
-            email,
-            telefone,
-            password,
-            provider: true,
-        })
+    async function handleSignUp () {
+        try {
+            await api.post('user', {
+                name,
+                email,
+                telefone,
+                password,
+                provider: true,
+            }).then((res) => console.log(res))
 
-        Alert.alert('Cadastro realizado com sucesso', 
-        'Você já pode fazer login na aplicação')
-        navigate.navigate('SignIn')
+            Alert.alert('Cadastro realizado com sucesso', 
+            'Você já pode fazer login na aplicação')
+            
+            navigate.navigate('SignIn')
+
+        } catch (err) {
+            console.log(err)
+            Alert.alert('Error', 'ocorreu um erro ao fazer o cadastro')
+        }
         
-    }, [])
+    }
+    
+    console.log(name, email, telefone, password)
 
     const fonstsLoadd = Fonts()
     if (!fonstsLoadd){
@@ -60,6 +69,7 @@ const SingUp: React.FC = () => {
                             style={{fontFamily: 'MontBold'}} 
                             onChangeText={(name) => setName(name)}
                             value={name}
+                            
                         />
                         <Input 
                             name='mail' icon='mail' 
@@ -67,11 +77,13 @@ const SingUp: React.FC = () => {
                             style={{fontFamily: 'MontBold'}}
                             onChangeText={(email) => setMail(email)} 
                             value={email}
+                            keyboardType='email-address'
                         />
                         <Input 
                             name='Telefone' icon='mobile1' 
                             placeholder='Telefone / celular' 
                             style={{fontFamily: 'MontBold'}}
+                            keyboardType='numeric'
                             
                             onChangeText={(telefone) => seTelefone(telefone)}
                             value={telefone}
@@ -80,12 +92,13 @@ const SingUp: React.FC = () => {
                             name='password' icon='lock' 
                             placeholder='Senha' 
                             style={{fontFamily: 'MontBold'}} 
+                            keyboardType='default'
 
                             onChangeText={(tex) => setPassword(tex)}
                             value={password}
                         />
                         
-                        <Button onPress={handleSigUp} >Entrar</Button>
+                        <Button onPress={() => handleSignUp()} >Entrar</Button>
                         <Boto />
                 </Container>
             </ScrollView>

@@ -68,6 +68,7 @@ const SingIn: React.FC = () => {
                      value={email}
                      onChangeText={(text) => setMail(text) }
                      clearTextOnFocus={true}
+                     keyboardType='email-address'
                   />
                   <Input 
                      name='password' 

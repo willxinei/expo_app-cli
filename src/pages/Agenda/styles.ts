@@ -12,22 +12,22 @@ export const Title = styled.Text`
    font-size: 40px;
 `
 
-// export const FootContainer = styled.View`
-//    flex-direction: row;
-//    justify-content: space-between;
+export const FootContainer = styled.View`
+   flex-direction: row;
+   justify-content: space-between;
 
-//    padding: 0 25px;
-//    background: #FF97B2;
-//    height: 80px;
-// `
+   padding: 0 25px;
+   background: #FF97B2;
+   height: 80px;
+`
 
-// export const Iconcontainer = styled.TouchableOpacity`
-//    align-items: center;
-//    justify-content: center;
-// `
+export const Iconcontainer = styled.TouchableOpacity`
+   align-items: center;
+   justify-content: center;
+`
 
-// export const Descript = styled.Text`
-//    font-size: 14px;
-//    margin-top:7px;
-//    color: #f2f2f2
-// `
+export const Descript = styled.Text`
+   font-size: 14px;
+   margin-top:7px;
+   color: #f2f2f2
+`

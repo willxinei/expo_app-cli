@@ -1,16 +1,18 @@
 import { useNavigation } from '@react-navigation/core'
 import AppLoading from 'expo-app-loading'
-import React, { useCallback, useEffect, useState } from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { Image, ScrollView, Text, View } from 'react-native'
 import { useAuth } from '../../hooks/AuthContext'
 import api from '../../services/api'
-import { Fonts } from '../utils'
-import { format, getDate, getMonth, getYear } from 'date-fns'
+import { convertHours, Fonts } from '../utils'
+import { format, getDate, getHours, getMonth, getYear, isAfter, isToday } from 'date-fns'
 import prBr from 'date-fns/locale/pt-BR'
 import { 
    AvatarContainer, 
    AvatarImage, 
+   AvatarImag,
    BoxFirst, 
+   BoxSecond, 
    Container, 
    ContainerBody, 
    ContainerText, 
@@ -23,13 +25,15 @@ import {
    Linear, 
    NextAppointment, 
    ProfileButton, 
-   ServiceContainer, 
    TextName, 
    TextService, 
    UserAvatar, 
-   UserName 
+   UserName, 
+   BoxText,
+   SemAgendamentoContainer
 } from './styles'
 import {Fontisto as Icon, Feather} from '@expo/vector-icons'
+import { parseISO, setMinutes } from 'date-fns/esm'
 
 export interface Request {
     id: string;
@@ -62,7 +66,7 @@ const DashBoard: React.FC = () => {
    const {user} = useAuth()
    const {navigate} = useNavigation()
 
-   const [response, setResponse] =useState<Response[]>([])
+   const [appointment, setAppoitment] = useState<Response[]>([])
 
    const navigateToProfile = useCallback(() => {
       navigate('Profile')
@@ -72,12 +76,14 @@ const DashBoard: React.FC = () => {
       navigate('Agenda')
    }, [navigate])
 
+   const navigateToServiço = useCallback(() => {
+      navigate('Serviço')
+   }, [navigate])
+
    const dia = getDate(data)
    const mes = getMonth(data) + 1
    const ano = getYear(data)
-   console.log(response.map((h) => {
-      return h.user.avatar_url
-   }))
+   
    useEffect(() => {
       api.get('appointment/ag/me', {
          params: {
@@ -85,14 +91,33 @@ const DashBoard: React.FC = () => {
             mes,
             ano
          }
-      }).then((res) => setResponse(res.data))
+      }).then((res) => setAppoitment(res.data))
    }, [])
+
+   const nextAgendamento = useMemo(() => {
+      return appointment.find((ap) => {
+         const hour = convertHours(ap.from) 
+         const hourNow = getHours(new Date()) * 60
+         return hour > hourNow
+      })
+   }, [appointment])
+
+   const afterAgendamentos = useMemo(() => {
+      return appointment.filter((h) => {
+         const nexHour = convertHours(nextAgendamento?.from)
+         const hour = convertHours(h.from)
+         return hour > nexHour
+
+      })
+   }, [])
+
+   console.log(afterAgendamentos)
+
 
    const fonstsLoadd = Fonts()
    if (!fonstsLoadd){
        return <AppLoading />
    }
-
 
    return (
       
@@ -124,37 +149,55 @@ const DashBoard: React.FC = () => {
                <DateText style={{fontFamily: 'MontRegular'}} >{dataFormat}</DateText>
                <NextAppointment style={{fontFamily: 'MontBold'}} >Proximo Atendimento</NextAppointment>
                
-               <ServiceContainer 
-
-                  data={response}
-                  keyExtractor={(id) => id.id}
-                  renderItem={({item: list}) => (
+               {isToday(data) && nextAgendamento && (
                      <BoxFirst>
                         <AvatarContainer>
-                           <AvatarImage source={{uri: `${list.user.avatar_url}`}} />
+                           <AvatarImage source={{uri: `${nextAgendamento?.user.avatar_url}`}} />
                         </AvatarContainer>
-
                         <ContainerText>
-                           <TextName style={{fontFamily: 'MontBold'}} >{list.user.name}</TextName>
-                           <TextService style={{fontFamily: 'MontRegular'}} >Service: {list.service}</TextService>
-                           <TextService style={{fontFamily: 'MontRegular'}} >hora: {list.from}</TextService>
+                           <TextName style={{fontFamily: 'MontBold'}} >{nextAgendamento?.user.name}</TextName>
+                           <TextService style={{fontFamily: 'MontRegular'}} > <Feather name='clock' size={20} /> Horário: {nextAgendamento.from} hs</TextService>
+                           <TextService style={{fontFamily: 'MontRegular'}} > <Feather name='clipboard' size={20} /> Serviço: {nextAgendamento.service}</TextService>
                         </ContainerText>
                      </BoxFirst>
-                  )}
-               />
+               )}
+               {afterAgendamentos.length === 0 && (
+                  <SemAgendamentoContainer>
+                     <Text style={{
+                        fontFamily: 'MontBold',
+                        fontSize: 30,
+                     }}>Sem horários</Text>
+                  </SemAgendamentoContainer>
+               )}
+               {afterAgendamentos.map(agenda => (
+                  <BoxSecond key={agenda.id}> 
+                     <Feather name='clock' size={25} />
+                     <TextService style={{fontFamily: 'MontBold'}} >{agenda.from}</TextService>
+                     <BoxText>
+                        <AvatarImag source={{uri: `${agenda.user.avatar_url}`}} />
+                        <Text style={{
+                           marginLeft: 30,
+                           fontSize: 16,
+                           fontFamily: 'MontBold'
+                        }}>{agenda.user.name}</Text>
+
+                     </BoxText>
+
+                  </BoxSecond>
+               ))}
             </ContainerBody>
             <FootContainer>
                <Iconcontainer onPress={navigateToAgenda}>
                   <Icon name='date' size={40} color="#f2f2f2" />
                   <Descript style={{fontFamily: 'MontRegular'}} >Minha agenda</Descript>
                </Iconcontainer>
-               <Iconcontainer>
+               <Iconcontainer onPress={navigateToServiço}>
                   <Feather name='clipboard' size={40} color="#f2f2f2" />
                   <Descript style={{fontFamily: 'MontRegular'}} >Criar um serviço</Descript>
                </Iconcontainer>
                <Iconcontainer>
                   <Feather name="x-square" size={40} color="#f2f2f2" />
-                  <Descript style={{fontFamily: 'MontRegular'}} >Criar um serviço</Descript>
+                  <Descript style={{fontFamily: 'MontRegular'}} >Bloquer um horário</Descript>
                </Iconcontainer>
             </FootContainer>
          </Container>

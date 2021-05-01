@@ -1,9 +1,6 @@
 import styled from 'styled-components/native';
-import {FlatList} from 'react-native'
-import {RectButton} from 'react-native-gesture-handler';
 import  {LinearGradient } from 'expo-linear-gradient';
-import {Request} from './index';
-import {Response} from './index'
+
 
 export const Container = styled(LinearGradient)`
   flex: 1;
@@ -65,11 +62,6 @@ export const NextAppointment = styled.Text`
    font-size: 24px;
    margin-top: 20px;
 `
-export const ServiceContainer = styled(
-   FlatList as new () => FlatList<Response>
-)`
-   padding-top: 25px;
-`
 
 
 export const BoxFirst = styled.View`
@@ -97,15 +89,15 @@ export const AvatarImage = styled.Image`
 
 export const TextName = styled.Text`
    font-size: 26px;
-   margin-left: 50px;
+   margin-left: 40%;
 `
 
-export const ContainerText = styled.View`
-`
+export const ContainerText = styled.View``
 
 export const TextService = styled.Text`
    font-size: 16px;
    margin-left: 15px;
+   margin-top: 10px;
 `
 
 export const FootContainer = styled.View`
@@ -123,11 +115,39 @@ export const Iconcontainer = styled.TouchableOpacity`
 `
 
 export const Descript = styled.Text`
-   font-size: 14px;
+   font-size: 12px;
    margin-top:7px;
-   color: #f2f2f2
+   color: #f2f2f2;
 `
 
+export const BoxSecond = styled.View`
+   margin-top: 10px;
+   flex-direction: row;
+   height: 70px;
+   align-items: center;
+   margin-top: 25px;
+`
 
+export const AvatarImag = styled.Image`
+   height: 53px;
+   width: 53px;
+   border-radius: 40px;
+   background: #d0d0d0;
+   margin-left: 20px;
+`
 
+export const BoxText = styled.View`
+   background: #f2f2f2;
+   flex-direction: row;
+   align-items: center;
+   border-radius: 12px;
+   margin-left: 10%;
+   height: 70px;
+   width: 63%;
+`
 
+export const SemAgendamentoContainer = styled.View`
+   flex: 1;
+   align-items: center;
+   justify-content: center;
+`

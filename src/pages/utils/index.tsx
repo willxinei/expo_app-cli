@@ -17,3 +17,10 @@ export function Fonts() {
 export const Colors = {
     rosa: '#cd6a96'
 }
+
+export function convertHours(time: string) {
+    const [hour, minutes] = time.split(':').map(Number);
+    const timeInMinutes = hour * 60 + minutes;
+    return timeInMinutes;
+ }
+
